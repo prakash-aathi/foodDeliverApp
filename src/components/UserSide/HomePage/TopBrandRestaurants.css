@@ -1,0 +1,59 @@
+.restaurant-list-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .restaurant-card {
+    display: flex;
+    height: 150px;
+    width: 500px;
+    align-items: center;
+    margin: 10px;
+    margin-left: 100px;
+    padding: 10px;
+    border: 3px solid #e11919;
+    background-color: #f3f3f3;
+    cursor: pointer;
+    
+  }
+  .restaurant-card:hover {
+    background-color: #bbefd5a2;
+  }
+
+  .restaurant-image {
+      width: 100%; /* Adjust the width of the image */
+      height: 100%;
+      object-fit: cover;
+  }
+  /* Details for selected restaurant */
+  .items-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  .item-card {
+    flex: 0 0 300px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #bb1414;
+    background-color: #dce2d6;
+   
+    align-items: center;
+  }
+  .item-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    align-items: center;
+  }
+  button {
+    padding: 8px 12px;
+    background-color: #abf708;
+    color: #310606;
+    border-color: rgb(9, 171, 33);
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #1bbe44e9;
+  }
