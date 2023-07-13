@@ -17,6 +17,8 @@ import RestaurantSearch from './components/UserSide/HomePage/RestaurantSearch';
 import ProfilePage from './components/UserSide/ProfilePage/ProfilePage'
 import AdminDashboard from './components/Admin/AdminDashboard';
 
+import OrderForm from './components/UserSide/DeliveryPage/OrderForm';
+
    const App = () => {
   return (
    <>
@@ -41,6 +43,8 @@ import AdminDashboard from './components/Admin/AdminDashboard';
           {/* user side  */}
           <Route exact path="/user" element={<RestaurantSearch />} />
           <Route exact path="/profile" element={<ProfilePage />} />
+          <Route exact path="/checkout"  element={ <OrderForm/> } />
+
 
           {/* admin side */}
             <Route exact path="/admin" element={<AdminDashboard/>} />

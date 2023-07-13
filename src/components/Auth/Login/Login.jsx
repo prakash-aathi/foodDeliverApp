@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import "./Login.css";
-import {useNavigate} from 'react-router-dom';
+import {json, useNavigate} from 'react-router-dom';
 import axios from "axios";
 
 
@@ -31,6 +31,7 @@ import axios from "axios";
                 localStorage.setItem("email", res.data.email);
                 localStorage.setItem("name", res.data.name);
                 localStorage.setItem("phone", res.data.phone);
+                localStorage.setItem("address", res.data.address.city );
                 if (res.data.role === "restaurant" || localStorage.getItem("role") === "restaurant") {
                     navigate("/restauranthome");
                 } else if (res.data.role === "user" || localStorage.getItem("role") === "user") {

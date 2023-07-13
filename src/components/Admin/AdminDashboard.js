@@ -133,7 +133,7 @@ const AdminDashboard = () => {
             <th>Customer</th>
             <th>Cost</th>
             <th>Ordered Date</th>
-            <th>Expected Time Deliver</th>              
+            <th>Ordered Time</th>              
           </tr>
         </thead>
         <tbody>

@@ -2,113 +2,14 @@ import { useEffect } from "react";
 import React, { useState } from "react";
 import axios from "axios";
 import "./TopBrandRestaurants.css"; // Import the CSS file for styling
+import { Link } from "react-router-dom";
 
 const TopBrandRestaurants = () => {
 
-    const [restaurants, setRestaurants] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const [viewCheckout, setViewCheckout] = useState(false);
+  const [cart, setCart] = useState([]);
 
-//   const [restaurants,setRestaurants] = useState([
-//     {
-//       name: "KFC",
-//       deliveryTime: "20-30 minutes",
-//       image: "https://e7.pngegg.com/pngimages/838/175/png-clipart-colonel-sanders-kfc-fried-chicken-logo-mcdonald-s-kfc-s-company-fast-food-restaurant.png",
-//       items: [
-//         {
-//           name: "Chicken Popcorn-Large",
-//           deliveryTime: "20 minutes",
-//          price: "248",
-//           image: "https://kfcbd.com/storage/products/R28Oo4W2rlIFNg9gkYExcsD5K.jpg",
-//         },
-//         {
-//           name: "Hot & Crispy Chicken -2pc",
-//           deliveryTime: "15 minutes",
-//           price: "229",
-//           image: "https://orderserv-kfc-assets.yum.com/15895bb59f7b4bb588ee933f8cd5344a/images/items/xl/D-K008.jpg?ver=27.37",
-//         },
-//         {
-//           name: "All in One Bucket",
-//           deliveryTime: "25 minutes",
-//           price: "548",
-//           image: "https://res.cloudinary.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/56c9ab92bd79745fd152a30fa2525426",
-//         },
-//         {
-//           name: "Chicken Zinger Burger - Tandoori",
-//           deliveryTime: "20 minutes",
-//           price: "208",
-//           image: "https://5.imimg.com/data5/SELLER/Default/2022/3/MG/GF/CF/16571218/tandoori-zinger-burger-500x500.PNG",
-//         },
-//         // Rest of the items...
-//       ],
-//     },
-
-//     {
-//       name: "A2B - Adyar Ananda Bhavan",
-//       deliveryTime: "15-20 minutes",
-//       image: "https://aabsweets.com/assets/img/logo-a2b.png",
-//       items: [
-//         {
-//           name: "Mini Tiffen",
-//           deliveryTime: "15 minutes",
-//           price: "175",
-//           image: "https://media-cdn.tripadvisor.com/media/photo-s/12/d2/93/48/mini-tiffin.jpg",
-//         },
-//         {
-//           name: "Podi Dosai",
-//           deliveryTime: "20 minutes",
-//           price: "127",
-//           image: "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_208,h_208,c_fit/z8ls5ld66kep2rejtuim",
-//         },
-//         {
-//           name: "Medhu Vadai",
-//           deliveryTime: "20 minutes",
-//           price: "60",
-//           image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Medu_Vadas.JPG/375px-Medu_Vadas.JPG",
-//         },
-//        // Rest of the items...
-//       ],
-//     },
-//     {
-//         name: "Subway Restaurant",
-//         deliveryTime: "20-35 minutes",
-//         image: "https://1000logos.net/wp-content/uploads/2017/06/Subway-Logo-2002.png",
-//         items: [
-//           {
-//             name: "Paneer Tikka Signature Wrap",
-//             deliveryTime: "20 minutes",
-//            price: "299",
-//             image: "https://cdn.tarladalal.com/members/9306/big/big_paneer_tikka_wrap-4220.jpg",
-//           },
-//           {
-//             name: "Aloo Patty Cheese Pull Sandwich",
-//             deliveryTime: "30 minutes",
-//             price: "259",
-//             image: "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_1024/50a6664c08beb7e26ca108ac3f2f9383",
-//           },
-//           // Rest of the items...
-//         ],
-//       },
-//       {
-//         name: "Shree Anandhaas",
-//         deliveryTime: "30-40 minutes",
-//         image: "https://opaldesignstudio.com/wp-content/uploads/2019/03/019-1002x480.jpg",
-//         items: [
-//           {
-//             name: "Mushroom Pulao",
-//             deliveryTime: "30 minutes",
-//             price: "206",
-//             image: "https://premasculinary.com/wp-content/uploads/2022/06/Mushroom-Pulao-Recipe-1-scaled.jpg",
-//           },
-//           {
-//             name: "Chilly Parotta",
-//             deliveryTime: "35 minutes",
-//             price: "125",
-//             image: "https://i0.wp.com/cookingfromheart.com/wp-content/uploads/2019/02/Chilli-Parotta-3.jpg?w=683&ssl=1",
-//           },
-//           // Rest of the items...
-//         ],
-//       },
-//     // Rest of the restaurants...
-//   ]);
 
     useEffect(() => {
         axios.get('http://localhost:8080/restaurant/all')
@@ -131,10 +32,136 @@ const TopBrandRestaurants = () => {
   const handleRestaurantSelection = (restaurant) => {
     setSelectedRestaurant(restaurant);
   };
-  const handleAddToCart = (itemName) => {
-    // Handle the logic for adding the item to the cart
-    console.log(`Item "${itemName}" added to cart.`);
+  const handleAddToCart = (item) => {
+    let newCart = [...cart]
+    let index = newCart.findIndex(cartItem => cartItem.id === item.id)
+    if (index !== -1) {
+      newCart[index].quantity += 1
+    } else {
+      newCart.push({ ...item, quantity: 1 })
+    }
+    setCart(newCart)
+    console.log(cart," cart");
   };
+
+  const handleCheckOut = () => {
+    setViewCheckout(true)
+  }
+
+
+
+  if (viewCheckout) { 
+
+    const handleOrder = () => { 
+
+      let items = cart.map(item => { 
+        return { 
+          description: item.description,
+          name: item.name,
+          price: item.price,
+          restaurantId: item.restaurantId,
+          tags: item.tags,
+        }
+      })
+      let order = {
+        customerId: localStorage.id,
+        customerName: localStorage.name,
+        deliveryAddress: localStorage.address,
+        items: items,
+        totalCost: price,
+      }
+      console.log(order, "order");
+      axios.post('http://localhost:8080/order', order)
+        .then(response => {
+          console.log(response.data)
+          setCart([])
+          setViewCheckout(false)
+        })
+        .catch(error => { 
+          console.log(error)
+        })
+      
+    }
+
+    const handleBackCart = () => {
+      setViewCheckout(false)
+    }
+
+    const handleChange = (item, value) => { 
+      let newCart = [...cart]
+      let index = newCart.indexOf(item)
+      if (index !== -1) {
+        newCart[index].quantity += value
+        if (newCart[index].quantity === 0) {
+          newCart.splice(index, 1)
+        }
+        setCart(newCart)
+      }
+    }
+  
+    const handleRemove = (id) => {
+      let newCart = [...cart]
+      let index = newCart.findIndex(item => item.id === id)
+      if (index !== -1) {
+        newCart.splice(index, 1)
+        setCart(newCart)
+      } else {
+        console.log("Item not found")
+      }
+    }
+    console.log(cart, "cart in view checkout");
+    let price = 0
+    cart.forEach(item => { 
+      price += item.price * item.quantity
+    })
+    return (
+      <div >
+          
+            <button onClick={handleBackCart} >back </button>
+            <h1 style={{color:"white" }} >Checkout</h1>
+        <article>
+            {cart.map((item) => (
+                <div className="cart_box" key={item.id}>
+                    <div className="cart_img">
+                    {item.image && item.image.body && (
+                          <img
+                            src={`data:${item.image.headers['Content-Type'][0]};base64,${item.image.body}`}
+                        alt={item.restaurantName}
+                        className="item-image"
+                        />
+                        )}
+                        <p>{item.name}</p>
+                    </div>
+
+                    <div>
+                        <button onClick={() => handleChange(item, -1)}>-</button>
+                        <button>{item.quantity}</button>
+                        <button onClick={() => handleChange(item, +1)}>+</button>
+                    </div>
+                    <div>
+                        <span>{item.price}</span>
+                        <button onClick={() => handleRemove(item.id)}>Remove</button>
+                    </div>
+                </div>
+            ))}
+            <div className="total">
+                <span >Total Price</span>
+                <span>Rs - {price}</span>
+            </div>
+            <br />
+            {price > 0 && (
+                <div className="text-center mt-3">
+                    
+              <button onClick={handleOrder} >
+                <Link to="/checkout" style={{ color:"white" }}>Proceed to Delivery</Link>
+              </button>
+
+                </div>
+            )}
+        </article>
+    </div>
+    )
+  }
 
   if (selectedRestaurant) {
     return (
@@ -143,6 +170,7 @@ const TopBrandRestaurants = () => {
         <h2 style={{ color:"white" }}>{selectedRestaurant.restaurantName}</h2>
         <div className="items-container">
           {selectedRestaurant.restaurantmenu.map((item, index) => (
+            <>
             <div key={index} className="item-card" >
               <h4>{item.name}</h4>
                   {item.image && item.image.body && (
@@ -160,6 +188,10 @@ const TopBrandRestaurants = () => {
                 Add to Cart
               </button>
             </div>
+              <div onClick={handleCheckOut} class="for-container">
+                <div  class="floating-button">Cart</div>
+         </div>
+            </>
           ))}
         </div>
       </div>

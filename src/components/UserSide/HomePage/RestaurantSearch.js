@@ -116,14 +116,16 @@ const RestaurantSearch = () => {
 
   const handleSearchClick = () => {
     const filteredRestaurants = restaurants.filter((restaurant) => {
-      const locationMatch = restaurant.location
+      const locationMatch = restaurant.restaurantLocation
         .toLowerCase()
         .includes(locationFilter.toLowerCase());
-      const restaurantMatch = restaurant.name
+      const restaurantMatch = restaurant.restaurantName
         .toLowerCase()
         .includes(restaurantFilter.toLowerCase());
       return locationMatch && restaurantMatch;
     });
+    console.log(filteredRestaurants, "filtered done");
+    // setRestaurants(filteredRestaurants)
     setFilteredRestaurants(filteredRestaurants);
     setSelectedRestaurant(null);
     setSearchClicked(true);
@@ -137,10 +139,17 @@ const RestaurantSearch = () => {
     <div className="horizontal">
       <div key={item.restaurantName} className="search-item-card">
         <h5>{item.name}</h5>
-        <img src={item.image} alt={item.name} />
-        <p>Cuisine: {item.cuisine}</p>
+        {item.image && item.image.body && (
+                          <img
+                            src={`data:${item.image.headers['Content-Type'][0]};base64,${item.image.body}`}
+                        alt={item.restaurantName}
+                        className="item-image"
+                       
+                        />
+                        )}
+        <p>Cuisine: {item.name}</p>
         <p>Price: ${item.price.toFixed(2)}</p>
-        <button onClick={() => addToCart(item)}>Add to Cart</button>
+        <button onClick={() => addToCart(item)}>Add to cart </button>
       </div>
     </div>
   );
@@ -158,9 +167,19 @@ const RestaurantSearch = () => {
       onClick={() => handleRestaurantSelection(restaurant)}
     >
       
-      <img src={restaurant.image} alt={restaurant.name} />
+      {restaurant.image && restaurant.image.body && (
+                          <img
+                            src={`data:${restaurant.image.headers['Content-Type'][0]};base64,${restaurant.image.body}`}
+                        alt={restaurant.restaurantName}
+                        className="item-image"
+                        style={{ height: "200px", width: "200px" }}
+                        />
+      )}
+       <p style={{ color:"black" }}>Loaction : {restaurant.restaurantLocation}</p>
+        <p style={{ color:"black" }}>Email id : {restaurant.restaurantEmail}</p>
+        <p style={{ color:"black" }}>Contact Number : {restaurant.restaurantContact}</p>
       <div>
-        <h3>{restaurant.name}</h3>
+        <h3>{restaurant.restaurantName}</h3>
       </div>
     </div>
   );
@@ -174,18 +193,26 @@ const RestaurantSearch = () => {
   let filteredRestaurantsContent = null;
   if (searchClicked) {
     if (selectedRestaurant) {
-      const { name, image, menuItems } = selectedRestaurant;
+      console.log(selectedRestaurant,"Selected res");
+      const { restaurantName, image, restaurantmenu } = selectedRestaurant;
       filteredRestaurantsContent = (
         <div>
-          <h3>Selected Restaurant: {name}</h3>
-          <img src={image} alt={name} />
+          <h3>Selected Restaurant: {restaurantName}</h3>
+          {image && image.body && (
+                          <img
+                            src={`data:${image.headers['Content-Type'][0]};base64,${image.body}`}
+                        alt={restaurantName}
+                        className="item-image"
+                        style={{ height: "200px", width: "200px" }}
+                        />
+          )}
           <h4>Menu tems</h4>
-          {menuItems.length === 0 ? (
+          {restaurantmenu.length === 0 ? (
             <p>No menu items found.</p>
           ) : (
             <div>
               <h4>Menu Items</h4>
-              {renderMenuItems(menuItems)}
+              {renderMenuItems(restaurantmenu)}
             </div>
           )}
         </div>
@@ -227,12 +254,12 @@ const RestaurantSearch = () => {
       <div className="content">
         {selectedRestaurant ? (
           <div>
-            {selectedRestaurant.menuItems.length === 0 ? (
+            {selectedRestaurant.restaurantmenu.length === 0 ? (
               <p>No menu items found.</p>
             ) : (
               <div >
                 <h4 style={{ marginLeft: "50px" }}>Menu Items</h4>
-                <div  >{renderMenuItems(selectedRestaurant.menuItems)}</div>
+                <div  >{renderMenuItems(selectedRestaurant.restaurantmenu)}</div>
               </div>
             )}
           </div>

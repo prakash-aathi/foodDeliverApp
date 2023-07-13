@@ -55,7 +55,7 @@ const Home = (props) => {
       <table className={styles.shadowtable}>
           <thead>
             <tr>
-              <th scope="col">S.no</th>
+              <th scope="col">Restaurant Id</th>
               <th scope="col">Restaurant Name</th>
               <th scope="col">Restaurant Location</th>
               <th scope="col">Restaurant Contact No.</th>
@@ -69,7 +69,7 @@ const Home = (props) => {
                 <>
                   { restaurant.userId == localStorage.id &&
                     <tr>
-                      <th scope="row" key={index}>{index + 1}</th>
+                      <th scope="row" key={index}>{ restaurant.restaurantId }</th>
                       <td>{restaurant.restaurantName}</td>
                       <td>{restaurant.restaurantLocation}</td>
                       <td>{restaurant.restaurantContact}</td>
