@@ -38,7 +38,10 @@ import { baseUrl } from "../../API/Api";
                     navigate("/user");
                 } else if (res.data.role === "admin" || localStorage.getItem("role") === "admin"){
                     navigate("/admin");
-                }
+                } 
+                else if (res.data.role === "delivery" || localStorage.getItem("role") === "delivery"){
+                    navigate("/deliveryhome");
+                } 
             }).catch(err => console.log(err))
     };
    

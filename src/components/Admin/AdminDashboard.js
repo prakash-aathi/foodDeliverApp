@@ -203,18 +203,20 @@ import Header from "../UserSide/NavBar/Header";
 import { baseUrl } from "../API/Api";
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
+  const [delivery, setDelivery] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${baseUrl}api/auth/users`)
+      .get(`${baseUrl}/api/auth/users`)
       .then((response) => {
-        console.log(response.data);
+        console.log(response.data,"users   ");
         setUsers(response.data.filter((user) => user.role === "user"));
         setRestaurants(
           response.data.filter((user) => user.role === "restaurant")
         );
+        setDelivery(response.data.filter((user)=> user.role === "delivery" ))
       })
       .catch((error) => {
         console.log(error);
@@ -250,6 +252,19 @@ const AdminDashboard = () => {
         console.log(response.data);
         const newRestaurants = restaurants.filter((user) => user.id !== id);
         setRestaurants(newRestaurants);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleDeleteDelivery = (id) => {
+    axios
+      .delete(`${baseUrl}/api/auth?id=${id}`)
+      .then((response) => {
+        console.log(response.data);
+        const newDelivery = delivery.filter((user) => user.id !== id);
+        setDelivery(newDelivery)
       })
       .catch((error) => {
         console.log(error);
@@ -339,6 +354,7 @@ const AdminDashboard = () => {
                   <th>Cost</th>
                   <th>Ordered Date</th>
                   <th>Ordered Time</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -354,6 +370,7 @@ const AdminDashboard = () => {
                     <td>
                       {new Date(order.deliveryTime).toLocaleTimeString()}
                     </td>
+                    <td>{ order.status }</td>
                   </tr>
                 ))}
               </tbody>
@@ -371,22 +388,26 @@ const AdminDashboard = () => {
                  <th>Action</th>
                </tr>
              </thead>
-             <tbody>
-             
-                   <td>1</td>
-                   <td>abc</td>
-                   <td>abc@gmail.com</td>
-                   <td>1234567890</td>
-                   <td>
+              <tbody>
+                
+                {delivery.map((deliver, index) => (
+                  <tr>
+                    <td>{index + 1}</td>
+                    <td>{deliver.name}</td>
+                    <td>{deliver.email}</td>
+                    <td>{deliver.phone}</td>
+                    <td>
                      <button
-                     
+                       onClick={() => handleDeleteDelivery(deliver.id)}
                        className="deliver-deletebutton"
                      >
                        Delete
                      </button>
                    </td>
-               
-              
+                  </tr>
+                ))
+
+                }
              </tbody>
            </table>
          </div> 
