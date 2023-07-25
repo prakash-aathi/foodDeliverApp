@@ -520,7 +520,7 @@ const TopBrandRestaurants = () => {
     {restaurant.restaurantName}
   </h3>
   <p style={{ color: 'white', fontSize: '15px' }}>Location: {restaurant.restaurantLocation}</p>
-  <Link to="/review" className="reviewoption">
+  <Link to={`/review/${restaurant.restaurantId}`} className="reviewoption">
     Review
   </Link>
   <button

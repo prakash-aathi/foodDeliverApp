@@ -65,8 +65,9 @@
 import React, { useState } from 'react';
 import Restaurantheader from "../../UserSide/NavBar/Restaurantheader";
 
-const RestaurantReview = () => {
+const RestaurantReview = ({reviewState}) => {
   const [response, setResponse] = useState('');
+  console.log(reviewState);
 
   const handleInputChange = (event) => {
     setResponse(event.target.value);
@@ -88,28 +89,25 @@ const RestaurantReview = () => {
             <tr>
               <th style={{ padding: '10px', borderBottom: '1px solid black' }}>Customer Name</th>
               <th style={{ padding: '10px', borderBottom: '1px solid black' }}>Comment</th>
-              <th style={{ padding: '10px', borderBottom: '1px solid black' }}>Response</th>
+              <th style={{ padding: '10px', borderBottom: '1px solid black' }}>Rating</th>
             </tr>
           </thead>
           <tbody>
+            {reviewState.map(Review => 
             <tr>
-              <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>Harish</td>
-              <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>Good Restaurant</td>
-              <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>Thank you!!</td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>{ Review.name }</td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>{ Review.review }</td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>{ Review.rating }</td>
             </tr>
-            <tr>
-              <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>Naveen</td>
-              <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>Awesome dishes</td>
-              <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>Tysm..!</td>
-            </tr>
-            <tr>
-              <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>Harish</td>
-              <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>Good Restaurant</td>
-              <td style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>Thank you!!</td>
-            </tr>
+            )
+
+            }
+            
           </tbody>
         </table>
-        <div className="response-input" style={{ marginTop: '20px',border:'1px solid black' }}>
+
+
+        {/* <div className="response-input" style={{ marginTop: '20px',border:'1px solid black' }}>
           <input
             type="text"
             className='response'
@@ -126,7 +124,8 @@ const RestaurantReview = () => {
           style={{ padding: '10px 20px', marginTop: '10px', fontSize: '16px' }}
         >
           Submit
-        </button>
+        </button> */}
+
       </div>
     </div>
   );
