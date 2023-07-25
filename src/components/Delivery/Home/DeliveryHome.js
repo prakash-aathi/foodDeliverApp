@@ -2,21 +2,22 @@ import React, { useState, useEffect } from "react";
 import "./DeliveryHome.css";
 import axios from "axios";
 import DeliveryNav from '../Delivery Navbar/DeliveryNav';
+import { baseUrl } from "../../API/Api";
 
 const DeliveryHome = () => {
-
+  
   const [orders, setorders] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/order").then((res) => {
+    axios.get(`${baseUrl}/order`).then((res) => {
       console.log(res.data);
       setorders(res.data)
     }).catch(err => console.log(err))
   }, [refresh])
   
   const handleAccept = (id) => {
-    axios.put(`http://localhost:8080/order/status?id=${id}&status=Accepted`)
+    axios.put(`${baseUrl}/order/status?id=${id}&status=Accepted`)
       .then((res) => {
         console.log(res.data);
         setRefresh(!refresh)
@@ -24,7 +25,7 @@ const DeliveryHome = () => {
   }
 
   const handleDelivered = (id) => {
-    axios.put(`http://localhost:8080/order/status?id=${id}&status=Delivered`)
+    axios.put(`${baseUrl}/order/status?id=${id}&status=Delivered`)
       .then((res) => {
         console.log(res.data);
         setRefresh(!refresh)
@@ -41,7 +42,7 @@ const DeliveryHome = () => {
           <center><table className="color-border-table" style={{ width: '900px' }}>
             <thead>
               <tr>
-                <th style={{ width: '50px' }}>S.no</th>
+              <th style={{ width: '50px' }}>S.no</th>
                 <th style={{ width: '70px' }}>Order ID</th>
                 <th style={{ width: '120px' }}>Customer Name</th>
                 <th style={{ width: '80px' }}>Total cost</th>
@@ -50,10 +51,10 @@ const DeliveryHome = () => {
                   <th style={{ width: '80px' }}>Ordered Time</th>
                   <th style={{ width: '80px' }}>Status</th>
                 <th style={{ width: '200px' }}><center>Action</center></th>
-              </tr>
+                 </tr>
             </thead>
-              <tbody style={{ fontSize: "15px" }}>
-              {
+            <tbody style={{fontSize:"15px"}}>
+            {
                   orders.map((order, index) => (
                     <tr key={index}>
                         <td>{index + 1}</td>
@@ -75,27 +76,13 @@ const DeliveryHome = () => {
                         Delivered
                       </button>
                         </td> :
-                        <div>
+                        <div className="dellbutton">
                           Delivered
-                    </div>    
+                        </div>    
                       }
                     </tr>
                   ))
                   }
-                  {/* <td>1</td>
-                  <td>12</td>
-                  <td>abcd</td>
-                  <td>xyz</td>
-                  <td>200</td>
-                  <td>xyzzsdfhsfsjkldfnakesaijedeja lskaklsdfhjflkasdn fawiehjiawfawjkehjk awehfjahi4trflkew kawje;lkjklawje</td>
-                  <td >
-                    <button className="acceptbutton">
-                      Accept
-                    </button>
-                    <button className="statusbutton">
-                      Delivered
-                    </button>
-                  </td> */}
             </tbody>
           </table></center>
         </div>
@@ -104,4 +91,5 @@ const DeliveryHome = () => {
     </div>
   );
 };
+
 export default DeliveryHome;

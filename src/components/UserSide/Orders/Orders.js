@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./Orders.css";
 import axios from "axios";
+import Header from "../NavBar/Header";
 import { useNavigate } from "react-router-dom";
-
+import { baseUrl } from "../../API/Api";
 const Orders = () => {
-
   const [orders, setOrders] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
 
-    axios.get("http://localhost:8080/order").then((res) => {
+    axios.get(`${baseUrl}/order`).then((res) => {
       console.log(res.data);
       console.log(localStorage.getItem("id"));
       setOrders(res.data.filter((order) => order.customerId == localStorage.getItem("id")));
@@ -41,7 +41,7 @@ const Orders = () => {
       items: Newitems,
       deliveryAddress: Reorder.deliveryAddress,
     }
-    axios.post("http://localhost:8080/order", newOrder ).then((res) => {
+    axios.post(`${baseUrl}/order`, newOrder ).then((res) => {
       console.log(res.data);
       navigate("/checkout")
       setRefresh(!refresh);
@@ -50,10 +50,9 @@ const Orders = () => {
     })
   }
   
-  
   return (
     <div  style={{ backgroundColor: "#060606" }}>
-
+<Header />
       <center>
       <div className="adminbody">
         <h2 className="title">Orders</h2>
@@ -71,12 +70,14 @@ const Orders = () => {
                 <th style={{ width: '200px' }}><center>Action</center></th>
               </tr>
             </thead>
-              <tbody style={{ fontSize: "15px" }}>
+            <tbody style={{ fontSize: "15px" }}>
                 {
+                  
                   orders.map((order, index) => (
+                    
                     <tr key={index}>
                       <td>{index + 1}</td>
-                      <td>{order.orderId}</td>
+                      <td>{order.id}</td>
                       <td>{order.customerName}</td>
                       <td>{order.totalCost}</td>
                       <td>{new Date(order.deliveryTime).toLocaleDateString()}</td>
@@ -90,18 +91,6 @@ const Orders = () => {
                      </tr>
                   ))
                 }
-                  {/* <td>1</td>
-                  <td>12</td>
-                  <td>abcd</td>
-                  <td>xyz</td>
-                  <td>200</td>
-                  <td>12.00</td>
-                  <td>Delivered</td>
-                  <td ><center>
-                    <button className="reorderbutton">
-                      Reorder
-                    </button></center>
-                  </td> */}
             </tbody>
           </table></center>
         </div>

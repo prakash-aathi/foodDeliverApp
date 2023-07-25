@@ -3,6 +3,9 @@ import "./Login.css";
 import {json, useNavigate} from 'react-router-dom';
 import axios from "axios";
 import { baseUrl } from "../../API/Api";
+// import {FaRegWindowClose } from 'react-icons/fa';
+
+
 
  export const Login = () => {
     const navigate = useNavigate();
@@ -38,7 +41,7 @@ import { baseUrl } from "../../API/Api";
                     navigate("/user");
                 } else if (res.data.role === "admin" || localStorage.getItem("role") === "admin"){
                     navigate("/admin");
-                } 
+                }
                 else if (res.data.role === "delivery" || localStorage.getItem("role") === "delivery"){
                     navigate("/deliveryhome");
                 } 
@@ -61,7 +64,7 @@ import { baseUrl } from "../../API/Api";
         <div className="login-overlay">
         <div className="auth-form-container">
         <span className="close-button" onClick={handleClose}>
-        <a href="/"><i className="fa-solid fa-xmark" ></i></a>
+        {/* <a href="/"><FaRegWindowClose /></a> */}
         </span>
 
             <h2>Login</h2>
